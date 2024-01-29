@@ -83,4 +83,22 @@ def possible_pairs(A, B, t_min, t_max):
     return total
 
 
+def possible_arrays(A, t_min, t_max):
+
+    total = 0
+    # Loops through entire array A
+    for x in range(0, len(A)):
+        tmp_sum = A[x]
+        if t_min <= A[x] <= t_max:
+            total += 1
+        for y in range(x + 1, len(A)):
+            tmp_sum += A[y]
+            if t_min <= tmp_sum <= t_max:
+                total += 1
+
+    return total
+
+
+print("Pairs : " + str(possible_arrays([-3, -4, 2, 0], -4, 3)))
+
 print(possible_pairs([0, 2, 1, 0, 0, 5, 17, 0], [-3, 10, 0], -3, 20))
