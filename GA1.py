@@ -1,8 +1,23 @@
-
-
-# Example usage:
-# number_of_allowable_intervals('input.txt', 'output.txt')
-        
+'''
+This file contains the template for Assignment1. For testing it, I will place
+it
+in a different directory, call the function <number_of_allowable_intervals>,
+and check
+its output. So, you can add/remove whatever you want to/from this file. But,
+don't
+change the name of the file or the name/signature of the following function.
+Also, I will use <python3> to run this code.
+'''
+def number_of_allowable_intervals(input_file_path, output_file_path):
+    file_in = open(input_file_path)
+    file_out = open(output_file_path, 'w')
+    input1 = file_in.read().replace(",","\n").split()
+    file_out.write(str(possible_arrays(input1[3:], input1[1], input1[2])))
+'''
+This function will contain your code. It wil read from the file
+<input_file_path>,
+and will write its output to the file <output_file_path>.
+'''
 
 
 # Returns the amount of numbers between the min and max values
@@ -24,6 +39,7 @@ def find_values_between(arr, min_val, max_val):
 
     # return the number of values between max and min
     return max_idx - min_idx + 1
+
 
 # Returns element index of target in arr[] or index of the value below where target would be
 # Runs in O(lg(n)) time
@@ -83,22 +99,18 @@ def possible_pairs(A, B, t_min, t_max):
     return total
 
 
+# Finds number of non-empty arrays that add up to values within range min to max
 def possible_arrays(A, t_min, t_max):
 
     total = 0
     # Loops through entire array A
     for x in range(0, len(A)):
-        tmp_sum = A[x]
-        if t_min <= A[x] <= t_max:
+        tmp_sum = int(A[x])
+        if int(t_min) <= int(A[x]) <= int(t_max):
             total += 1
         for y in range(x + 1, len(A)):
-            tmp_sum += A[y]
-            if t_min <= tmp_sum <= t_max:
+            tmp_sum += int(A[y])
+            if int(t_min) <= tmp_sum <= int(t_max):
                 total += 1
 
     return total
-
-
-print("Pairs : " + str(possible_arrays([-3, -4, 2, 0], -4, 3)))
-
-print(possible_pairs([0, 2, 1, 0, 0, 5, 17, 0], [-3, 10, 0], -3, 20))
