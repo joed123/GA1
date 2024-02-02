@@ -11,8 +11,8 @@ Also, I will use <python3> to run this code.
 def number_of_allowable_intervals(input_file_path, output_file_path):
     file_in = open(input_file_path)
     file_out = open(output_file_path, 'w')
-    input = file_in.read().replace(",","\n").split()
-    input1 = [eval(i) for i in input]
+    input1 = file_in.read().replace(",","\n").split()
+    input1 = [eval(i) for i in input1]
     file_out.write(str(count_subarrays_within_range(input1[3:], input1[1], input1[2])))
 '''
 This function will contain your code. It wil read from the file
@@ -152,5 +152,3 @@ def count_subarrays_within_range(A, t_min, t_max):
     # Call the recursive function
     return count_subarrays_with_sum_in_range(prefix_sums, 0, len(prefix_sums) - 1)
 
-
-number_of_allowable_intervals('output.txt', 'input.txt')
