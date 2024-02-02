@@ -83,22 +83,60 @@ def possible_pairs(A, B, t_min, t_max):
     return total
 
 
-def possible_arrays(A, t_min, t_max):
+def count_subarrays_within_range(A, t_min, t_max):
+    def count_subarrays_with_sum_in_range(prefix_sums, start, end):
+        if start == end:
+            return 0
+        
+        mid = (start + end) // 2
+        count = count_subarrays_with_sum_in_range(prefix_sums, start, mid) + \
+                count_subarrays_with_sum_in_range(prefix_sums, mid + 1, end)
+        
+        # Count subarrays where the sum falls within the range [t_min, t_max]
+        i = j = mid + 1
+        for left_sum in prefix_sums[start:mid+1]:
+            while i <= end and prefix_sums[i] - left_sum < t_min:
+                i += 1
+            while j <= end and prefix_sums[j] - left_sum <= t_max:
+                j += 1
+            count += j - i
+        
+        # Merge the two sorted halves
+        temp = [0] * (end - start + 1)
+        i = start
+        j = mid + 1
+        k = 0
+        while i <= mid and j <= end:
+            if prefix_sums[i] < prefix_sums[j]:
+                temp[k] = prefix_sums[i]
+                i += 1
+            else:
+                temp[k] = prefix_sums[j]
+                j += 1
+            k += 1
+        while i <= mid:
+            temp[k] = prefix_sums[i]
+            i += 1
+            k += 1
+        while j <= end:
+            temp[k] = prefix_sums[j]
+            j += 1
+            k += 1
+        for idx in range(start, end + 1):
+            prefix_sums[idx] = temp[idx - start]
+        
+        return count
+    
+    # Compute prefix sums
+    prefix_sums = [0]
+    for num in A:
+        prefix_sums.append(prefix_sums[-1] + num)
+    
+    # Call the recursive function
+    return count_subarrays_with_sum_in_range(prefix_sums, 0, len(prefix_sums) - 1)
 
-    total = 0
-    # Loops through entire array A
-    for x in range(0, len(A)):
-        tmp_sum = A[x]
-        if t_min <= A[x] <= t_max:
-            total += 1
-        for y in range(x + 1, len(A)):
-            tmp_sum += A[y]
-            if t_min <= tmp_sum <= t_max:
-                total += 1
 
-    return total
-
-
-print("Pairs : " + str(possible_arrays([-3, -4, 2, 0], -4, 3)))
 
 print(possible_pairs([0, 2, 1, 0, 0, 5, 17, 0], [-3, 10, 0], -3, 20))
+
+print("Pairs : " + str(count_subarrays_within_range([-1, -1, -1, -1, 4, 4, -1, -1, -1, -1], -1000, 0)))
