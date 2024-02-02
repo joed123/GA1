@@ -13,7 +13,7 @@ def number_of_allowable_intervals(input_file_path, output_file_path):
     file_out = open(output_file_path, 'w')
     input1 = file_in.read().replace(",","\n").split()
     input1 = [eval(i) for i in input1]
-    file_out.write(str(possible_arrays(input1[3:], input1[1], input1[2])))
+    file_out.write(str(count_subarrays_within_range(input1[3:], input1[1], input1[2])))
 '''
 This function will contain your code. It wil read from the file
 <input_file_path>,
@@ -109,7 +109,7 @@ def count_subarrays_within_range(A, t_min, t_max):
         count = count_subarrays_with_sum_in_range(prefix_sums, start, mid) + \
                 count_subarrays_with_sum_in_range(prefix_sums, mid + 1, end)
         
-        # Count subarrays where the sum falls within the range [t_min, t_max]
+        # Count sub arrays where the sum falls within the range [t_min, t_max]
         i = j = mid + 1
         for left_sum in prefix_sums[start:mid+1]:
             while i <= end and prefix_sums[i] - left_sum < t_min:
@@ -153,8 +153,4 @@ def count_subarrays_within_range(A, t_min, t_max):
     return count_subarrays_with_sum_in_range(prefix_sums, 0, len(prefix_sums) - 1)
 
 
-
-print(possible_pairs([0, 2, 1, 0, 0, 5, 17, 0], [-3, 10, 0], -3, 20))
-
-print("Pairs : " + str(count_subarrays_within_range([-1, -1, -1, -1, 4, 4, -1, -1, -1, -1], -1000, 0)))
-# Finds number of non-empty arrays that add up to values within range min to max
+number_of_allowable_intervals('output.txt', 'input.txt')
